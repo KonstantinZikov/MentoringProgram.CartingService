@@ -13,7 +13,7 @@ public static class DependencyInjection
         string connectionString = $"default.db";
 
         services.AddSingleton<ILiteDatabaseConfiguration>(new LiteDatabaseConfiguration(connectionString));
-        services.AddScoped<IRepository<Cart>,Repository<Cart>>();
+        services.AddScoped<IRepository<Cart,string>,Repository<Cart, string>>();
 
         return services;
     }

@@ -5,7 +5,7 @@ namespace BLL.Carts.Queries
 {
     public class LineItemDto
     {
-        public required Guid Id { get; init; }
+        public required int Id { get; init; }
 
         public required int ProductId { get; init; }
 

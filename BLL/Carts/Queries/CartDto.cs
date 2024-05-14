@@ -10,7 +10,7 @@ public class CartDto
         Items = Array.Empty<LineItemDto>();
     }
 
-    public Guid Id { get; init; }
+    public string Id { get; init; }
 
     public IReadOnlyCollection<LineItemDto> Items { get; init; }
 
@@ -18,7 +18,7 @@ public class CartDto
     {
         public Mapping()
         {
-            CreateMap<Cart, CartDto>();            
+            CreateMap<Cart, CartDto>();  
         }
     }
 }

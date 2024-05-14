@@ -1,6 +1,5 @@
 ﻿using BLL.Common.Behaviours;
-using BLL.Common.Interfaces;
-using BLL.Providers;
+using BLL.Services;
 using DAL;
 using FluentValidation;
 using MediatR;
@@ -25,7 +24,7 @@ public static class DependencyInjection
             cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
         });
 
-        services.AddScoped<ICurrentCartProvider,CurrentCartProvider>();
+        services.AddScoped<ICartService, CartService>();
 
         return services;
     }

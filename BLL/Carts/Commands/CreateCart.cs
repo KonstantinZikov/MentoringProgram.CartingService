@@ -4,20 +4,20 @@ using MediatR;
 
 namespace BLL.Carts.Commands;
 
-public record CreateCartCommand : IRequest<Guid>;
+public record CreateCartCommand(string id) : IRequest;
 
-public class CreateCategoryCommandHandler : IRequestHandler<CreateCartCommand, Guid>
+public class CreateCartCommandHandler : IRequestHandler<CreateCartCommand>
 {
-    private readonly IRepository<Cart> _repository;
+    private readonly IRepository<Cart, string> _repository;
 
-    public CreateCategoryCommandHandler(IRepository<Cart> repository)
+    public CreateCartCommandHandler(IRepository<Cart, string> repository)
     {
         _repository = repository;
     }
 
-    public async Task<Guid> Handle(CreateCartCommand request, CancellationToken cancellationToken)
+    public async Task Handle(CreateCartCommand request, CancellationToken cancellationToken)
     {
-        Cart cart = new Cart();      
-        return await _repository.Insert(cart);
+        Cart cart = new Cart { Id = request.id };
+        await _repository.Insert(cart);
     }
 }

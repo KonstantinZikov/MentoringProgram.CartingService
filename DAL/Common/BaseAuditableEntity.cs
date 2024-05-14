@@ -1,6 +1,6 @@
 ﻿namespace DAL.Common
 {
-    public class BaseAuditableEntity : BaseEntity
+    public class BaseAuditableEntity<T> : BaseEntity<T>
     {
         public DateTimeOffset Created { get; set; }
 

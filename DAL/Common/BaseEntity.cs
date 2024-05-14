@@ -1,10 +1,12 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using LiteDB;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DAL.Common;
 
-public abstract class BaseEntity 
+public abstract class BaseEntity<T>
 {
-    public Guid Id { get; set; }
+    [BsonId]
+    public T Id { get; set; }
 
     private readonly List<BaseEvent> _domainEvents = new();
 

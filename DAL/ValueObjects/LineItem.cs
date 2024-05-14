@@ -4,7 +4,7 @@ namespace DAL.ValueObjects
 {
     public class LineItem : ValueObject
     {
-        public required Guid Id { get; init; }
+        public required int Id { get; init; }
 
         public required int ProductId { get; init; }
 

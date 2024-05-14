@@ -1,4 +1,4 @@
-﻿using BLL.Common.Interfaces;
+﻿using Ardalis.GuardClauses;
 using DAL.Common.Interface;
 using DAL.Entities;
 using DAL.ValueObjects;
@@ -6,8 +6,10 @@ using MediatR;
 
 namespace BLL.Carts.Commands;
 
-public record AddItemToCartCommand : IRequest<Guid>
+public record AddItemToCartCommand : IRequest<int>
 {
+    public required string CartId { get; init; }
+
     public required int ProductId { get; init; }
 
     public required string Name { get; init; }
@@ -23,20 +25,20 @@ public record AddItemToCartCommand : IRequest<Guid>
     public required int Quantity { get; init; }
 }
 
-public class AddItemToCartCommandHandler : IRequestHandler<AddItemToCartCommand, Guid>
+public class AddItemToCartCommandHandler : IRequestHandler<AddItemToCartCommand, int>
 {
-    private readonly IRepository<Cart> _repository;
-    private readonly ICurrentCartProvider _cartProvider;
+    private readonly IRepository<Cart, string> _repository;
 
-    public AddItemToCartCommandHandler(IRepository<Cart> repository, ICurrentCartProvider cartProvider)
+    public AddItemToCartCommandHandler(IRepository<Cart, string> repository)
     {
         _repository = repository;
-        _cartProvider = cartProvider;
     }
 
-    public async Task<Guid> Handle(AddItemToCartCommand request, CancellationToken cancellationToken)
+    public async Task<int> Handle(AddItemToCartCommand request, CancellationToken cancellationToken)
     {
-        Cart cart = await _cartProvider.GetCurrentCart(cancellationToken);
+        Cart? cart = await _repository.GetById(request.CartId);
+
+        Guard.Against.NotFound(request.CartId, cart);
 
         Image? image = null;
 
@@ -47,7 +49,7 @@ public class AddItemToCartCommandHandler : IRequestHandler<AddItemToCartCommand,
 
         var lineItem = new LineItem
         {
-            Id = Guid.NewGuid(),
+            Id = cart.LinesIdCounter++,
             ProductId = request.ProductId,
             Name = request.Name,
             Quantity = request.Quantity,

@@ -4,7 +4,7 @@ using LiteDB;
 
 namespace Infrastructure.Data;
 
-public class Repository<TEntity> : IRepository<TEntity> where TEntity : BaseEntity
+public class Repository<TEntity,T> : IRepository<TEntity,T> where TEntity : BaseEntity<T>
 {
     private readonly ILiteDatabaseConfiguration _config;
 
@@ -13,12 +13,12 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : BaseEnti
         _config = liteDatabaseConfiguration;
     }
 
-    public async Task<TEntity> GetById(Guid id)
+    public async Task<TEntity> GetById(T id)
     {
         using (var db = new LiteDatabase(_config.ConnectionString))
         {
-            var col = db.GetCollection<TEntity>();
-            return col.FindOne(e => e.Id.Equals(id));
+            var col = db.GetCollection<TEntity>();       
+            return col.FindById(id.ToString());
         }
     }
 
@@ -39,12 +39,12 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : BaseEnti
         }
     }
 
-    public async Task<Guid> Insert(TEntity entity)
+    public async Task Insert(TEntity entity)
     {
         using (var db = new LiteDatabase(_config.ConnectionString))
         {
             var col = db.GetCollection<TEntity>();
-            return col.Insert(entity);
+            col.Insert(entity.Id.ToString(), entity);
         }
     }
 
@@ -53,16 +53,16 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : BaseEnti
         using (var db = new LiteDatabase(_config.ConnectionString))
         {
             var col = db.GetCollection<TEntity>();
-            col.Update(entity);
+            col.Update(entity.Id.ToString(),entity);
         }
     }
 
-    public async Task Delete(int id)
+    public async Task Delete(T id)
     {
         using (var db = new LiteDatabase(_config.ConnectionString))
         {
             var col = db.GetCollection<TEntity>();
-            col.DeleteMany(e => e.Id.Equals(id));
+            col.Delete(id.ToString());
         }
     }
 }
