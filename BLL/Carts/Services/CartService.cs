@@ -2,7 +2,7 @@
 using BLL.Carts.Queries;
 using MediatR;
 
-namespace BLL.Services
+namespace BLL.Carts.Services
 {
     public class CartService : ICartService
     {
@@ -15,7 +15,7 @@ namespace BLL.Services
 
         public async Task<int> AddLineToCartWithCartCreation(AddItemToCartCommand command)
         {
-            CartDto? cart = await this._sender.Send(new GetCartQuery(command.CartId));
+            CartDto? cart = await _sender.Send(new GetCartQuery(command.CartId));
 
             if (cart == null)
             {

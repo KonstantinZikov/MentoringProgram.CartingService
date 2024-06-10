@@ -2,6 +2,7 @@ using Asp.Versioning;
 using Asp.Versioning.ApiExplorer;
 using Asp.Versioning.Conventions;
 using BLL;
+using BLL.MQ;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
 using Web.Infrastructure;
@@ -58,7 +59,7 @@ builder.Services.AddSwaggerGen((options =>
     });
 }));
 
-builder.Services.AddBllServices();
+builder.Services.AddBllServices(builder.Configuration);
 
 var app = builder.Build();
 
@@ -84,5 +85,7 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapDefaultControllerRoute();
+
+app.StartRabbitListeners();
 
 app.Run();

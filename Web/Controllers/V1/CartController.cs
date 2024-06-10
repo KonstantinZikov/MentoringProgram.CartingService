@@ -3,7 +3,7 @@ using Asp.Versioning;
 using AutoMapper;
 using BLL.Carts.Commands;
 using BLL.Carts.Queries;
-using BLL.Services;
+using BLL.Carts.Services;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Web.Models;

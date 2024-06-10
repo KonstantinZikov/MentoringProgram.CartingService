@@ -14,6 +14,8 @@ namespace DAL.Common.Interface
 
         Task Update(TEntity entity);
 
+        Task Update(IEnumerable<TEntity> entities);
+
         Task Delete(T id);      
     }
 }

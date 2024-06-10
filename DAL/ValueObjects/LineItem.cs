@@ -8,13 +8,13 @@ namespace DAL.ValueObjects
 
         public required int ProductId { get; init; }
 
-        public required string Name { get; init; }
+        public required string Name { get; set; }
 
-        public Image? Image { get; init; }
+        public Image? Image { get; set; }
 
-        public required Money Price { get; init; }
+        public required Money Price { get; set; }
 
-        public required int Quantity { get; init; }
+        public required int Quantity { get; set; }
 
         protected override IEnumerable<object> GetEqualityComponents()
         {

@@ -1,8 +1,10 @@
-﻿using BLL.Common.Behaviours;
-using BLL.Services;
+﻿using BLL.Carts.Services;
+using BLL.Common.Behaviours;
+using BLL.MQ;
 using DAL;
 using FluentValidation;
 using MediatR;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 
@@ -10,7 +12,7 @@ namespace BLL;
 
 public static class DependencyInjection
 {
-    public static IServiceCollection AddBllServices(this IServiceCollection services)
+    public static IServiceCollection AddBllServices(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddDalServices();
 
@@ -25,6 +27,14 @@ public static class DependencyInjection
         });
 
         services.AddScoped<ICartService, CartService>();
+
+        services.AddSingleton(new RabbitListenerConfiguration { RabbitUrl = new Uri(configuration["RabbitMQ:Url"]) });
+
+        services.Scan(scan => scan
+                .FromCallingAssembly()
+                    .AddClasses(c => c
+                        .AssignableTo<IRabbitListener>())
+                        .As<IRabbitListener>());
 
         return services;
     }

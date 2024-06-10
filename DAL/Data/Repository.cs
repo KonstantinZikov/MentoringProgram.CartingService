@@ -4,7 +4,7 @@ using LiteDB;
 
 namespace Infrastructure.Data;
 
-public class Repository<TEntity,T> : IRepository<TEntity,T> where TEntity : BaseEntity<T>
+public class Repository<TEntity, T> : IRepository<TEntity, T> where TEntity : BaseEntity<T>
 {
     private readonly ILiteDatabaseConfiguration _config;
 
@@ -54,6 +54,15 @@ public class Repository<TEntity,T> : IRepository<TEntity,T> where TEntity : Base
         {
             var col = db.GetCollection<TEntity>();
             col.Update(entity.Id.ToString(),entity);
+        }
+    }
+
+    public async Task Update(IEnumerable<TEntity> entities)
+    {
+        using (var db = new LiteDatabase(_config.ConnectionString))
+        {
+            var col = db.GetCollection<TEntity>();
+            col.Update(entities);
         }
     }
 

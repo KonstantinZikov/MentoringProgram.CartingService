@@ -1,6 +1,6 @@
 ﻿using BLL.Carts.Commands;
 
-namespace BLL.Services
+namespace BLL.Carts.Services
 {
     public interface ICartService
     {
