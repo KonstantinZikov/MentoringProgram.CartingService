@@ -2,10 +2,12 @@ using Asp.Versioning;
 using Asp.Versioning.ApiExplorer;
 using Asp.Versioning.Conventions;
 using BLL;
+using BLL.Common.Interfaces;
 using BLL.MQ;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
 using Web.Infrastructure;
+using Web.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -58,6 +60,9 @@ builder.Services.AddSwaggerGen((options =>
         Description = ".NET Mentoring program Carting Service"
     });
 }));
+
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddScoped<IUser, CurrentUser>();
 
 builder.Services.AddBllServices(builder.Configuration);
 

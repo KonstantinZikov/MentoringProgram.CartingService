@@ -1,4 +1,5 @@
 ﻿using Ardalis.GuardClauses;
+using BLL.Common.Identity;
 using DAL.Common.Interface;
 using DAL.Entities;
 using DAL.ValueObjects;
@@ -6,6 +7,7 @@ using MediatR;
 
 namespace BLL.Carts.Commands;
 
+[Authorize($"{Roles.Manager},{Roles.Buyer}")]
 public record AddItemToCartCommand : IRequest<int>
 {
     public required string CartId { get; init; }
